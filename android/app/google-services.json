@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "273887522286",
+    "project_id": "rapidtechnology-7f183",
+    "storage_bucket": "rapidtechnology-7f183.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273887522286:android:458237cb33a556e407b2ff",
+        "android_client_info": {
+          "package_name": "com.example.todo_realtime_mvvm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6xUNgmLNRHlp39xVewpyOmK9eoVSMuNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
