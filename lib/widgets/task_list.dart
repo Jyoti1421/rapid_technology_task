@@ -6,9 +6,36 @@ import 'package:todo_realtime_mvvm/utils/app_styles.dart';
 import 'package:todo_realtime_mvvm/utils/app_text_styles.dart';
 import 'package:todo_realtime_mvvm/utils/app_dimensions.dart';
 import 'package:todo_realtime_mvvm/viewmodels/task_view_model.dart';
-import 'edit_task_dialog.dart'; // Import the new dialog widget
+import 'edit_task_dialog.dart';
 
-class TaskList extends StatelessWidget {
+class TaskList extends StatefulWidget {
+  @override
+  _TaskListState createState() => _TaskListState();
+}
+
+class _TaskListState extends State<TaskList> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final viewModel = Provider.of<TaskViewModel>(context, listen: false);
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 100) {
+      viewModel.loadMoreTasks(); // Fetch more tasks
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<TaskViewModel>(context);
@@ -16,9 +43,13 @@ class TaskList extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return ListView.builder(
-      itemCount: viewModel.tasks.length,
+      controller: _scrollController,
+      itemCount: viewModel.tasks.length + (viewModel.isLoadingMore ? 1 : 0),
       padding: AppDimensions.listPadding(screenWidth, screenHeight),
       itemBuilder: (context, index) {
+        if (index == viewModel.tasks.length) {
+          return Center(child: CircularProgressIndicator()); // Show loader at the bottom
+        }
         final task = viewModel.tasks[index];
 
         return Container(
